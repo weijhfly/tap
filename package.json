@@ -1,0 +1,25 @@
+{
+  "name": "js-tap",
+  "version": "1.1.1",
+  "description": "a tap plugin",
+  "main": "tap.js",
+  "bin": "tap.js",
+  "scripts": {
+    "webpack": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tap",
+    "js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/weijhfly/tap"
+  },
+  "author": "wjh",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "webpack": "^3.10.0"
+  }
+}
