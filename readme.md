@@ -20,7 +20,7 @@ tap(document,'.test',function(){
 //stop propagation/prevent default
 tap('.test',function(e){
   e.stopPropagation();
-  e.preventDefault();
+  //e.preventDefault();
 })
 ```
 # Demo

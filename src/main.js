@@ -51,10 +51,11 @@ tap('.son2',function(e){
 同上，事件委托中仅能阻止委托元素的默认动作
 */
 tap('.a1',function(e){
-	e.preventDefault();
+	//tap中默认阻止
+	//e.preventDefault();
 	console.log('无法跳转');
 })
-//快速跳转-事件委托 事件委托中无法阻止跳转
+//快速跳转-事件委托
 tap(document,'.a2',function(){
 	window.location = this.href;
 });
