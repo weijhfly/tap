@@ -54,7 +54,7 @@ tap('.a1',function(e){
 	e.preventDefault();
 	console.log('无法跳转');
 })
-//快速跳转-事件委托
-tap(document,'a2',function(){
+//快速跳转-事件委托 事件委托中无法阻止跳转
+tap(document,'.a2',function(){
 	window.location = this.href;
 });

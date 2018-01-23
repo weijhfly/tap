@@ -1,5 +1,5 @@
 /*!
- * tap.js v1.1.2
+ * tap.js v1.1.3
  * by weijianhua  https://github.com/weijhfly/tap
 */
 ;(function (factory) {
