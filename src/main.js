@@ -1,31 +1,60 @@
 var tap = require('../tap.js');
 
-//普通调用
-tap('.button',function(){
-	var e = "ontouchend" in document? 'tap':'click';
-	alert(e+' : '+this.innerText);
+//直接调用
+tap('.button',function(e){
+	console.log(e);
+	var event = "ontouchend" in document? 'tap':'click';
+	layer.msg(event+' : '+this.innerText);
 })
 // 事件委托 event delegation
 tap('#test','.button2',function(){
-	var e = "ontouchend" in document? 'tap':'click';
-	alert(e+' : '+this.innerText);
+	var event = "ontouchend" in document? 'tap':'click';
+	layer.msg(event+' : '+this.innerText);
 })
-tap('#test','.add',function(){
+var i = 0;
+tap('#test','.add',function(e){
+	console.log(e);
+	i ++;
 	var test = document.getElementById("test");
 	var button = document.createElement("button");
 	button.className = 'button2';
-	button.innerHTML = "button text";
+	button.innerHTML = "button "+i;
 	test.insertBefore(button,test.childNodes[0]); 
+})
+tap(document,'.doc',function(){
+	layer.msg('doc');
 })
 /*
 阻止冒泡 true stop propagation
 在事件委托中仅能阻止委托元素对上层的冒泡
 */
 tap('#parent',function(){
-	console.log('parent');
+	setTimeout(function() {
+		layer.msg('parent');
+	}, 100);
 })
-//若在此使用alert等阻塞线程的方法，将会影响300ms判断而无法正常模拟冒泡，后续将调整,
-//click无影响，可以正常冒泡
 tap('.son',function(){
-	console.log('son');
-},true)
+	layer.msg('son');
+})
+// 阻止冒泡
+tap('#parent2',function(){
+	setTimeout(function() {
+		layer.msg('parent2');
+	}, 100);
+})
+tap('.son2',function(e){
+	e.stopPropagation();
+	layer.msg('son2');
+})
+/*
+阻止默认动作
+同上，事件委托中仅能阻止委托元素的默认动作
+*/
+tap('.a1',function(e){
+	e.preventDefault();
+	console.log('无法跳转');
+})
+//快速跳转-事件委托
+tap(document,'a2',function(){
+	window.location = this.href;
+});

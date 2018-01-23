@@ -76,42 +76,71 @@ module.exports = __webpack_require__(1);
 
 var tap = __webpack_require__(2);
 
-//普通调用
-tap('.button',function(){
-	var e = "ontouchend" in document? 'tap':'click';
-	alert(e+' : '+this.innerText);
+//直接调用
+tap('.button',function(e){
+	console.log(e);
+	var event = "ontouchend" in document? 'tap':'click';
+	layer.msg(event+' : '+this.innerText);
 })
 // 事件委托 event delegation
 tap('#test','.button2',function(){
-	var e = "ontouchend" in document? 'tap':'click';
-	alert(e+' : '+this.innerText);
+	var event = "ontouchend" in document? 'tap':'click';
+	layer.msg(event+' : '+this.innerText);
 })
-tap('#test','.add',function(){
+var i = 0;
+tap('#test','.add',function(e){
+	console.log(e);
+	i ++;
 	var test = document.getElementById("test");
 	var button = document.createElement("button");
 	button.className = 'button2';
-	button.innerHTML = "button text";
+	button.innerHTML = "button "+i;
 	test.insertBefore(button,test.childNodes[0]); 
+})
+tap(document,'.doc',function(){
+	layer.msg('doc');
 })
 /*
 阻止冒泡 true stop propagation
 在事件委托中仅能阻止委托元素对上层的冒泡
 */
 tap('#parent',function(){
-	console.log('parent');
+	setTimeout(function() {
+		layer.msg('parent');
+	}, 100);
 })
-//若在此使用alert等阻塞线程的方法，将会影响300ms判断而无法正常模拟冒泡，后续将调整,
-//click无影响，可以正常冒泡
 tap('.son',function(){
-	console.log('son');
-},true)
+	layer.msg('son');
+})
+// 阻止冒泡
+tap('#parent2',function(){
+	setTimeout(function() {
+		layer.msg('parent2');
+	}, 100);
+})
+tap('.son2',function(e){
+	e.stopPropagation();
+	layer.msg('son2');
+})
+/*
+阻止默认动作
+同上，事件委托中仅能阻止委托元素的默认动作
+*/
+tap('.a1',function(e){
+	e.preventDefault();
+	console.log('无法跳转');
+})
+//快速跳转-事件委托
+tap(document,'a2',function(){
+	window.location = this.href;
+});
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * tap.js
+ * tap.js v1.1.2
  * by weijianhua  https://github.com/weijhfly/tap
 */
 ;(function (factory) {
@@ -125,7 +154,8 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	}
 }(function(){
 	var arg = arguments,
-		els = document.querySelectorAll(arg[0]),
+		doc = document,
+		els = arg[0] == doc ? [doc]:document.querySelectorAll(arg[0]),
 		isTouch = "ontouchend" in document,
 		len = els.length,
 		i = 0,
@@ -137,45 +167,37 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
 			var o = {};
 			els[i].addEventListener('touchstart',function(e){
 				var t = e.touches[0];
-				o.startX = t.clientX;
-				o.startY = t.clientY;
+				o.startX = t.pageX;
+				o.startY = t.pageY;
 				o.sTime = + new Date;
-				if(arg[isEntrust ? 3:2]){e.stopPropagation();}
 			});
 			els[i].addEventListener('touchend',function(e){
 				var t = e.changedTouches[0];
-				o.endX = t.clientX;
-				o.endY = t.clientY;
+				o.endX = t.pageX;
+				o.endY = t.pageY;
 				if((+ new Date)-o.sTime<300){
 					if(Math.abs(o.endX-o.startX)+Math.abs(o.endY-o.startY)<20){
-						e.preventDefault();
-						if(isEntrust){
-							if(equal(e,arg[1])){
-								arg[2].call(e.target);
-							}
-						}else{
-							arg[1].call(this);
-						}
+						handler(e,arg,this);
 					}
 				}
-				if(arg[isEntrust ? 3:2]){e.stopPropagation();}
 				o = {};
 			});
 		}else{
 			els[i].addEventListener('click',function(e){
-				if(arg[isEntrust ? 3:2]){e.stopPropagation();}
-				if(isEntrust){
-					if(equal(e,arg[1])){
-						arg[2].call(e.target);
-					}
-				}else{
-					arg[1].call(this);
-				}
+				handler(e,arg,this);
 			});
 		}
 		i ++;
 	}
-
+	function handler(e,arg,that){
+		if(isEntrust){
+			if(equal(e,arg[1])){
+				arg[2].call(e.target,e);
+			}
+		}else{
+			arg[1].call(that,e);
+		}
+	}
 	function equal(e,el){
 		var flag = false;
 		if(el.indexOf('.') != -1 && e.target.className == el.replace('.','')){

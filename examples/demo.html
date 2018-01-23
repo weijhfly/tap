@@ -4,8 +4,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1.0, user-scalable=0">
 	<title>tap demo</title>
+	<style type="text/css">
+		h4{margin: 10px 0;}
+	</style>
 </head>
 <body>
+	<h3>直接调用</h3>
 	<div>
 		<button class="button">tap1</button>
 		<button class="button">tap2</button>
@@ -14,15 +18,34 @@
 		<button class="button">tap5</button>
 	</div>
 	<hr>
+	<h3>事件委托</h3>
 	<div id="test">
 		<button class="button2">tap1</button>
 		<button class="add">add</button>
+		<button class="doc">document</button>
 	</div>
 	<hr>
+	<h3>事件冒泡</h3>
+	<h4>正常冒泡</h4>
 	<div id="parent">
 		parent<br><br>
 		<button class="son">son</button>
 	</div>
+	<h4>阻止冒泡</h4>
+	<div id="parent2">
+		parent2<br><br>
+		<button class="son2">son2</button>
+	</div>
+	<h3>阻止默认动作</h3>
+	<a href="无法跳转" class="a1">无法跳转</a>
+	<h4>快速跳转</h4>
+	<div class="a-box">
+		<a href="https://github.com/weijhfly/tap" class="a2">快速跳转</a>
+		<a href="https://github.com/weijhfly/tap" class="a2">快速跳转</a>
+		<a href="https://github.com/weijhfly/tap" class="a2">快速跳转</a>
+	</div>
+	<!-- layer.js仅做弹出演示 -->
+	<script src="../src/layer/layer.js"></script>
 	<script src="../dist/build.js"></script>
 </body>
 </html>
