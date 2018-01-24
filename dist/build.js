@@ -101,7 +101,7 @@ tap(document,'.doc',function(){
 	layer.msg('doc');
 })
 /*
-阻止冒泡 true stop propagation
+阻止冒泡 stop propagation
 在事件委托中仅能阻止委托元素对上层的冒泡
 */
 tap('#parent',function(){
@@ -127,13 +127,27 @@ tap('.son2',function(e){
 同上，事件委托中仅能阻止委托元素的默认动作
 */
 tap('.a1',function(e){
-	//tap中默认阻止
-	//e.preventDefault();
+	e.preventDefault();
 	console.log('无法跳转');
 })
+/*
+* 代码优化
+*/
 //快速跳转-事件委托
 tap(document,'.a2',function(){
 	window.location = this.href;
+});
+// 通过冒泡实现多个事件 **默认不能重复，重复只执行第一个
+tap(document,{
+	'.e1':function(){
+	   layer.msg(this.innerText);
+	},
+	'.e2':function(){
+	   layer.msg(this.innerText);
+	},
+	'.e3':function(){
+	   layer.msg(this.innerText);
+	}
 });
 
 /***/ }),
@@ -141,7 +155,7 @@ tap(document,'.a2',function(){
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * tap.js v1.1.4
+ * tap.js v1.1.6
  * by weijianhua  https://github.com/weijhfly/tap
 */
 ;(function (factory) {
@@ -160,7 +174,8 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
 		isTouch = "ontouchend" in document,
 		len = els.length,
 		i = 0,
-		isEntrust = typeof arg[1]== 'string';
+		isEntrust = typeof arg[1]== 'string',
+		isMulti = typeof arg[1]== 'object';
 
 	if(len == 0){return false;}
 	while (i < len){
@@ -195,6 +210,13 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
 		if(isEntrust){
 			if(equal(e,arg[1])){
 				arg[2].call(e.target,e);
+			}
+		}else if(isMulti){
+			for(key in arg[1]){
+				if(equal(e,key)){
+					arg[1][key].call(e.target,e);
+					break;
+				}
 			}
 		}else{
 			arg[1].call(that,e);

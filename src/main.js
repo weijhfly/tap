@@ -25,7 +25,7 @@ tap(document,'.doc',function(){
 	layer.msg('doc');
 })
 /*
-阻止冒泡 true stop propagation
+阻止冒泡 stop propagation
 在事件委托中仅能阻止委托元素对上层的冒泡
 */
 tap('#parent',function(){
@@ -51,11 +51,25 @@ tap('.son2',function(e){
 同上，事件委托中仅能阻止委托元素的默认动作
 */
 tap('.a1',function(e){
-	//tap中默认阻止
-	//e.preventDefault();
+	e.preventDefault();
 	console.log('无法跳转');
 })
+/*
+* 代码优化
+*/
 //快速跳转-事件委托
 tap(document,'.a2',function(){
 	window.location = this.href;
+});
+// 通过冒泡实现多个事件 **默认不能重复，重复只执行第一个
+tap(document,{
+	'.e1':function(){
+	   layer.msg(this.innerText);
+	},
+	'.e2':function(){
+	   layer.msg(this.innerText);
+	},
+	'.e3':function(){
+	   layer.msg(this.innerText);
+	}
 });

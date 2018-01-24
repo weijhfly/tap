@@ -8,24 +8,42 @@ $ npm install --save js-tap
 ```js
 var tap = require('js-tap');
 
+//直接调用
 tap('.test',function(){
   console.log(this);
 })
 
-//event delegation
+//事件委托
 tap(document,'.test',function(){
   console.log(this);
 })
 
-//stop propagation/prevent default
+//阻止事件冒泡/默认动作
 tap('.test',function(e){
   e.stopPropagation();
-  //e.preventDefault();
+  e.preventDefault();
 })
+
+//同时指定多个事件
+tap(document,{
+	'.el1':function(){
+	   //事件1
+	},
+	'.el2':function(){
+	   //事件2
+	},
+	'.el3':function(){
+	   //事件3
+	}
+})
+
 ```
 # Demo
 [demo page](https://weijhfly.github.io/tap-demo.html "demo")
 ## Update
+### 2018.1.24(update)
+
+> * 增加同时指定多个事件方式
 ### 2018.1.23(update)
 
 > * 事件委托可以使用document
