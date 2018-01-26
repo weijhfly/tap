@@ -125,19 +125,22 @@ tap('.son2',function(e){
 /*
 阻止默认动作
 同上，事件委托中仅能阻止委托元素的默认动作
+注意：在移动端默认执行e.preventDefault();
 */
-tap('.a1',function(e){
+tap('.submit',function(e){
 	e.preventDefault();
-	console.log('无法跳转');
+	e.stopPropagation();
+	layer.msg('无法提交');
 })
 /*
 * 代码优化
 */
-//快速跳转-事件委托
-tap(document,'.a2',function(){
-	window.location = this.href;
-});
-// 通过冒泡实现多个事件 **默认不能重复，重复只执行第一个
+//跳转 **存在href属性
+tap(document,'a');
+//获取焦点
+tap(document,'input');
+tap(document,'textarea');
+// 通过委托实现多个事件 **默认不能重复，重复只执行第一个
 tap(document,{
 	'.e1':function(){
 	   layer.msg(this.innerText);
@@ -155,7 +158,7 @@ tap(document,{
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * tap.js v1.1.6
+ * tap.js v1.1.7
  * by weijianhua  https://github.com/weijhfly/tap
 */
 ;(function (factory) {
@@ -207,6 +210,14 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
 		i ++;
 	}
 	function handler(e,arg,that){
+
+		if(e.target.href){
+			return window.location = e.target.href;
+		}
+		var tagName = e.target.tagName.toLocaleLowerCase();
+		if(tagName === 'input' || tagName === 'textarea') {
+          return e.target.focus();
+        }
 		if(isEntrust){
 			if(equal(e,arg[1])){
 				arg[2].call(e.target,e);

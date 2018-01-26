@@ -49,19 +49,22 @@ tap('.son2',function(e){
 /*
 阻止默认动作
 同上，事件委托中仅能阻止委托元素的默认动作
+注意：在移动端默认执行e.preventDefault();
 */
-tap('.a1',function(e){
+tap('.submit',function(e){
 	e.preventDefault();
-	console.log('无法跳转');
+	e.stopPropagation();
+	layer.msg('无法提交');
 })
 /*
 * 代码优化
 */
-//快速跳转-事件委托
-tap(document,'.a2',function(){
-	window.location = this.href;
-});
-// 通过冒泡实现多个事件 **默认不能重复，重复只执行第一个
+//跳转 **存在href属性
+tap(document,'a');
+//获取焦点
+tap(document,'input');
+tap(document,'textarea');
+// 通过委托实现多个事件 **默认不能重复，重复只执行第一个
 tap(document,{
 	'.e1':function(){
 	   layer.msg(this.innerText);
