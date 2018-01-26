@@ -1,4 +1,4 @@
-# tap [![npm](https://img.shields.io/npm/v/js-tap.svg)](https://www.npmjs.com/package/js-tap)
+# tap [![npm](https://img.shields.io/npm/v/js-tap.svg)](https://www.npmjs.com/package/js-tap) [![npm](https://img.shields.io/npm/dm/js-tap.svg)](https://www.npmjs.com/package/js-tap)
 > a tap plugin
 # Install
 ```js
@@ -26,15 +26,15 @@ tap('.test',function(e){
 
 //同时指定多个事件
 tap(document,{
-	'.el1':function(){
-	   //事件1
-	},
-	'.el2':function(){
-	   //事件2
-	},
-	'.el3':function(){
-	   //事件3
-	}
+ '.el1':function(){
+   //事件1
+ },
+ '.el2':function(){
+  //事件2
+ },
+ '.el3':function(){
+  //事件3
+ }
 })
 
 ```
