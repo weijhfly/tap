@@ -137,9 +137,6 @@ tap('.submit',function(e){
 */
 //跳转 **存在href属性
 tap(document,'a');
-//获取焦点
-tap(document,'input');
-tap(document,'textarea');
 // 通过委托实现多个事件 **默认不能重复，重复只执行第一个
 tap(document,{
 	'.e1':function(){
@@ -158,7 +155,7 @@ tap(document,{
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * tap.js v1.2.0
+ * tap.js v1.2.1
  * by weijianhua  https://github.com/weijhfly/tap
 */
 ;(function (factory) {
@@ -172,9 +169,9 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	}
 }(function(){
 	var arg = arguments,
-		doc = document,
-		els = arg[0] == doc ? [doc]:document.querySelectorAll(arg[0]),
-		isTouch = "ontouchend" in document,
+		doc = window.document,
+		els = arg[0] == doc ? [doc]:doc.querySelectorAll(arg[0]),
+		isTouch = "ontouchend" in doc,
 		len = els.length,
 		i = 0,
 		isEntrust = typeof arg[1]== 'string',
@@ -191,16 +188,16 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
 				o.sTime = + new Date;
 			});
 			els[i].addEventListener('touchend',function(e){
-				var tagName = e.target.tagName.toLocaleLowerCase();
-				if(tagName != 'select' && tagName != 'input' && tagName != 'textarea'){
-					document.activeElement.blur();
-					e.preventDefault();
-				}
 				var t = e.changedTouches[0];
 				o.endX = t.pageX;
 				o.endY = t.pageY;
 				if((+ new Date)-o.sTime<300){
 					if(Math.abs(o.endX-o.startX)+Math.abs(o.endY-o.startY)<20){
+						var tagName = e.target.tagName.toLocaleLowerCase();
+						if(tagName != 'select' && tagName != 'input' && tagName != 'textarea'){
+							doc.activeElement.blur();
+							e.preventDefault();
+						}
 						handler(e,arg,this);
 					}
 				}
@@ -245,7 +242,6 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
 		return flag;
 	}
 }))
-
 
 /***/ })
 /******/ ]);

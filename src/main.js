@@ -61,9 +61,6 @@ tap('.submit',function(e){
 */
 //跳转 **存在href属性
 tap(document,'a');
-//获取焦点
-tap(document,'input');
-tap(document,'textarea');
 // 通过委托实现多个事件 **默认不能重复，重复只执行第一个
 tap(document,{
 	'.e1':function(){
