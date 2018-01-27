@@ -158,7 +158,7 @@ tap(document,{
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * tap.js v1.1.8
+ * tap.js v1.1.9
  * by weijianhua  https://github.com/weijhfly/tap
 */
 ;(function (factory) {
@@ -191,7 +191,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
 				o.sTime = + new Date;
 			});
 			els[i].addEventListener('touchend',function(e){
-				e.preventDefault();
+				var tagName = e.target.tagName.toLocaleLowerCase();
+				if(tagName != 'select'){
+					e.preventDefault();
+				}
 				var t = e.changedTouches[0];
 				o.endX = t.pageX;
 				o.endY = t.pageY;
