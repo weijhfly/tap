@@ -158,7 +158,7 @@ tap(document,{
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * tap.js v1.1.7
+ * tap.js v1.1.8
  * by weijianhua  https://github.com/weijhfly/tap
 */
 ;(function (factory) {
@@ -217,6 +217,8 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
 		var tagName = e.target.tagName.toLocaleLowerCase();
 		if(tagName === 'input' || tagName === 'textarea') {
           return e.target.focus();
+        }else{
+        	document.activeElement.blur();
         }
 		if(isEntrust){
 			if(equal(e,arg[1])){
