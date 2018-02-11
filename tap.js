@@ -1,6 +1,7 @@
 /*!
- * tap.js v1.2.2
- * by weijianhua  https://github.com/weijhfly/tap
+ * tap.js v1.2.3
+ * By 雾空 https://github.com/weijhfly/tap
+ * Time:2018/1/17
 */
 ;(function (factory) {
 	if (typeof define === 'function' && define.amd) {
