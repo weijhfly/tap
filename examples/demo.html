@@ -47,13 +47,91 @@
 		<a href="https://github.com/weijhfly/tap">没有子元素</a>
 	</div>
 	<br>
-	<input  type="text" placeholder="测试焦点是否正常">
 	<h4>同时指定多个事件</h4>
-	<button class="e1">事件1</button>
+	<button class="e1 test">事件1</button>
 	<button class="e2">事件2</button>
 	<button class="e3">事件3</button>
-	<!-- layer.js仅做弹出演示 -->
+	<br>
+	<br>
+	<input  type="text" placeholder="测试焦点是否正常">
+	<br>
+	<br>
+	<script src="../tap.js"></script>
 	<script src="../src/layer/layer.js"></script>
-	<script src="../dist/build.js"></script>
+	<script>
+		//直接调用
+		tap('.button',function(e){
+			console.log(e);
+			var event = "ontouchend" in document? 'tap':'click';
+			layer.msg(event+' : '+this.innerText);
+		})
+		// 事件委托 event delegation
+		tap('#test','.button2',function(){
+			var event = "ontouchend" in document? 'tap':'click';
+			layer.msg(event+' : '+this.innerText);
+		})
+		var i = 0;
+		tap('#test','.add',function(e){
+			console.log(e);
+			i ++;
+			var test = document.getElementById("test");
+			var button = document.createElement("button");
+			button.className = 'button2';
+			button.innerHTML = "button "+i;
+			test.insertBefore(button,test.childNodes[0]); 
+		})
+		tap(document,'.doc',function(){
+			layer.msg('doc');
+		})
+		/*
+		阻止冒泡 stop propagation
+		在事件委托中仅能阻止委托元素对上层的冒泡
+		*/
+		tap('#parent',function(){
+			setTimeout(function() {
+				layer.msg('parent');
+			}, 100);
+		})
+		tap('.son',function(){
+			layer.msg('son');
+		})
+		// 阻止冒泡
+		tap('#parent2',function(){
+			setTimeout(function() {
+				layer.msg('parent2');
+			}, 100);
+		})
+		tap('.son2',function(e){
+			e.stopPropagation();
+			layer.msg('son2');
+		})
+		/*
+		阻止默认动作
+		同上，事件委托中仅能阻止委托元素的默认动作
+		注意：在移动端默认执行e.preventDefault();
+		*/
+		tap('.submit',function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			layer.msg('无法提交');
+		})
+		/*
+		* 代码优化
+		*/
+		//跳转 **存在href属性
+		tap(document,'a');
+		// 通过委托实现多个事件 **默认不能重复，重复只执行第一个
+		tap(document,{
+			'.e1':function(){
+			   layer.msg(this.innerText);
+			},
+			'.e2':function(){
+			   layer.msg(this.innerText);
+			},
+			'.e3':function(){
+			   layer.msg(this.innerText);
+			}
+		});
+</script>
 </body>
 </html>
